@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.ClickListener, CurrenciesListMVP.View {
+public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.TouchListener, CurrenciesListMVP.View {
 
     private RecyclerView recyclerView;
     CurrenciesListActivityComponent currenciesListActivityComponent;

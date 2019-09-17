@@ -6,6 +6,7 @@ import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
 import com.prod.realtimecurrencycalc.scopes.ActivityScope;
 import com.prod.realtimecurrencycalc.utils.rx.AppSchedulersProvider;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 

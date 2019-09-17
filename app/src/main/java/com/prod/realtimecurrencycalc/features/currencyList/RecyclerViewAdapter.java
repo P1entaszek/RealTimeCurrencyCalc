@@ -1,8 +1,10 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
+import android.annotation.SuppressLint;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,11 +22,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CurrencyViewModel> data;
-    private RecyclerViewAdapter.ClickListener clickListener;
+    private TouchListener touchListener;
 
     @Inject
-    public RecyclerViewAdapter(ClickListener clickListener) {
-        this.clickListener = clickListener;
+    public RecyclerViewAdapter(TouchListener touchListener) {
+        this.touchListener = touchListener;
         data = new ArrayList<>();
     }
 
@@ -55,6 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private EditText currencyValue;
         private ConstraintLayout constraintLayoutContainer;
 
+        @SuppressLint("ClickableViewAccessibility")
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -64,22 +67,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
-           currencyValue.setOnClickListener(new View.OnClickListener() {
+           currencyValue.setOnTouchListener(new View.OnTouchListener() {
                @Override
-                public void onClick(View v) {
-                    if(getAdapterPosition()==0){
-                        clickListener.recalculateData(data.get(0).getCurrencyValue());
-                    }
-                    else{
-                        clickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
-                    }
+               public boolean onTouch(View v, MotionEvent event) {
+                   if(getAdapterPosition()==0){
+                       touchListener.recalculateData(data.get(0).getCurrencyValue());
+                   }
+                   else{
+                       touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
+                   }
 
+               return true;
                }
            });
         }
     }
 
-    public interface ClickListener {
+    public interface TouchListener {
         void updateData(String currencyName);
         void recalculateData(Double currencyMultiplier);
     }
