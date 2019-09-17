@@ -47,7 +47,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currencies_list);
         injectComponent();
-        presenter.getCurrencies("DKK");
+        presenter.getCurrencies("DKK", 100.0);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -73,8 +73,16 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
 
     @Override
     public void updateData(String currencyName) {
-        Toast.makeText(getBaseContext(), "working click", Toast.LENGTH_LONG).show();
-        presenter.getCurrencies(currencyName);
+        Toast.makeText(getBaseContext(), "getCurrencies", Toast.LENGTH_LONG).show();
+        presenter.getCurrencies(currencyName, 100.0);
+    }
+
+
+
+    @Override
+    public void recalculateData(Double currencyMultiplier) {
+        Toast.makeText(getBaseContext(), "recalculating", Toast.LENGTH_LONG).show();
+        presenter.recalculateCurrencies(currencyMultiplier);
     }
 
     @Override

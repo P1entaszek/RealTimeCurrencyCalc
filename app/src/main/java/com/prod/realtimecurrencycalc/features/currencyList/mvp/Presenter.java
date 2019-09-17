@@ -1,7 +1,5 @@
 package com.prod.realtimecurrencycalc.features.currencyList.mvp;
 
-import android.util.Log;
-
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
 import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
@@ -20,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 public class Presenter implements CurrenciesListMVP.Presenter {
     APIService apiService;
     CurrenciesListMVP.View view;
+    List<CurrencyViewModel> allCurrencies = new ArrayList<>();
 
     @Inject
     public Presenter(APIService apiService, CurrenciesListMVP.View view) {
@@ -29,7 +28,7 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
 
     @Override
-    public void getCurrencies(final String currencyKey) {
+    public void getCurrencies(final String currencyKey, final Double currencyMultiplier) {
         apiService.
                 getSearchedCurrencies(currencyKey)
                 .subscribeOn(AppSchedulersProvider.getInstance().io())
@@ -43,20 +42,20 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     @Override
                     public void onNext(CurrenciesApiModel currenciesApiModel) {
-                        view.showError("something");
                         ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
                         ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
                         List<CurrencyViewModel> currencies = new ArrayList<>();
                         for (int i=0; i<keyList.size(); i++) {
                             if(keyList.get(i).equals(currencyKey)){
-                                currencies.add(0,new CurrencyViewModel("", keyList.get(i), "",  1.0));
+                                currencies.add(0,new CurrencyViewModel("", keyList.get(i), "",  currencyMultiplier));
                             }
 
                             else {
-                                currencies.add(new CurrencyViewModel("", keyList.get(i), "", valuesList.get(i)));
+                                currencies.add(new CurrencyViewModel("", keyList.get(i), "", valuesList.get(i)*currencyMultiplier));
                             }
 
                         }
+                        allCurrencies=currencies;
                         view.showAllCurrencies(currencies);
                     }
 
@@ -70,5 +69,16 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void recalculateCurrencies(Double currencyMultiplier) {
+      /*  for (CurrencyViewModel currency : currencies) {
+            Double currencyValue = currency.getCurrencyValue();
+            currencyValue *= currencyMultiplier;
+            currency.setCurrencyValue(currencyValue);
+        }
+        view.showAllCurrencies(currencies);
+*/
     }
 }

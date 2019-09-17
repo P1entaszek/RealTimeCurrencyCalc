@@ -14,6 +14,8 @@ public interface CurrenciesListMVP {
     }
 
     interface Presenter {
-        void getCurrencies(String currencyKey);
+        void getCurrencies(String currencyKey, Double currencyMultiplier);
+
+        void recalculateCurrencies(Double currencyMultiplier);
     }
 }

@@ -67,8 +67,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
            currencyValue.setOnClickListener(new View.OnClickListener() {
                @Override
                 public void onClick(View v) {
+                    if(getAdapterPosition()==0){
+                        clickListener.recalculateData(data.get(0).getCurrencyValue());
+                    }
+                    else{
+                        clickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
+                    }
 
-                   clickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
                }
            });
         }
@@ -76,6 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public interface ClickListener {
         void updateData(String currencyName);
+        void recalculateData(Double currencyMultiplier);
     }
 
     public void setData(List<CurrencyViewModel> data) {
