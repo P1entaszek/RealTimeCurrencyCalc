@@ -35,11 +35,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        for (CurrencyViewModel currency : data) {
-            holder.currencyShortcut.setText(currency.getCurrencyShortcut());
-            holder.currencyValue.setText(currency.getCurrencyValue().toString());
-            holder.currencyFullname.setText(currency.getCurrencyFullName());
-        }
+            holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
+            holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
+            holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
+
 
     }
 
@@ -59,12 +58,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View itemView) {
             super(itemView);
 
-            currencyValue.setOnClickListener(new View.OnClickListener() {
-                @Override
+            currencyFullname = itemView.findViewById(R.id.currencyName);
+            currencyShortcut = itemView.findViewById(R.id.currencyShortcut);
+            currencyValue = itemView.findViewById(R.id.currencyValue);
+
+
+
+           currencyValue.setOnClickListener(new View.OnClickListener() {
+               @Override
                 public void onClick(View v) {
-                    clickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
-                }
-            });
+
+                   clickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
+               }
+           });
         }
     }
 

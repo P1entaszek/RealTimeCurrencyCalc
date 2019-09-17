@@ -4,13 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Rates {
-
     @SerializedName("AUD")
     @Expose
     private Double aUD;
     @SerializedName("BGN")
     @Expose
     private Double bGN;
+    @SerializedName("EUR")
+    @Expose
+    private Double eUR;
     @SerializedName("BRL")
     @Expose
     private Double bRL;

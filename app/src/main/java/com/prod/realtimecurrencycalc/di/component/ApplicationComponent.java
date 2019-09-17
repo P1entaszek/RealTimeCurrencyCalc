@@ -6,6 +6,8 @@ import com.prod.realtimecurrencycalc.CurrencyApplication;
 import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
 import com.prod.realtimecurrencycalc.datasource.retrofit.di.RetrofitModule;
 import com.prod.realtimecurrencycalc.di.module.ContextModule;
+import com.prod.realtimecurrencycalc.features.currencyList.CurrenciesListActivity;
+import com.prod.realtimecurrencycalc.features.currencyList.di.component.CurrenciesListActivityComponent;
 import com.prod.realtimecurrencycalc.qualifiers.ApplicationContext;
 import com.prod.realtimecurrencycalc.scopes.ApplicationScope;
 
@@ -17,8 +19,7 @@ public interface ApplicationComponent {
 
     APIService getApiService();
 
-    @ApplicationContext
-    Context getContext();
-
     void injectApplication(CurrencyApplication myApplication);
+
+    CurrenciesListActivityComponent.Builder getCurrencyComponentBuilder();
 }

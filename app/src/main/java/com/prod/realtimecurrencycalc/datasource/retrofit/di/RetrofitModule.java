@@ -13,39 +13,39 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-        public class RetrofitModule {
+public class RetrofitModule {
 
-        @Provides
-        @ApplicationScope
-        APIService getApiService(Retrofit retroFit) {
+    @Provides
+    @ApplicationScope
+    APIService getApiService(Retrofit retroFit) {
         return retroFit.create(APIService.class);
-        }
+    }
 
-        @Provides
-        @ApplicationScope
-        Retrofit getRetrofit(OkHttpClient okHttpClient) {
+    @Provides
+    @ApplicationScope
+    Retrofit getRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-        .baseUrl("https://revolut.duckdns.org/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .client(okHttpClient)
-        .build();
-        }
+                .baseUrl("https://revolut.duckdns.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+    }
 
-        @Provides
-        @ApplicationScope
-        OkHttpClient getOkHttpCleint(HttpLoggingInterceptor httpLoggingInterceptor) {
+    @Provides
+    @ApplicationScope
+    OkHttpClient getOkHttpCleint(HttpLoggingInterceptor httpLoggingInterceptor) {
         return new OkHttpClient.Builder()
-        .addInterceptor(httpLoggingInterceptor)
-        .build();
-        }
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+    }
 
-        @Provides
-        @ApplicationScope
-        HttpLoggingInterceptor getHttpLoggingInterceptor() {
+    @Provides
+    @ApplicationScope
+    HttpLoggingInterceptor getHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return httpLoggingInterceptor;
-        }
-        }
+    }
+}
 

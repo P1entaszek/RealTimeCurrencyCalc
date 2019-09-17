@@ -1,24 +1,29 @@
 package com.prod.realtimecurrencycalc.features.currencyList.di.component;
 
-import android.content.Context;
-
-import com.prod.realtimecurrencycalc.CurrencyApplication;
-import com.prod.realtimecurrencycalc.di.component.ApplicationComponent;
 import com.prod.realtimecurrencycalc.features.currencyList.CurrenciesListActivity;
 import com.prod.realtimecurrencycalc.features.currencyList.di.module.AdapterModule;
+import com.prod.realtimecurrencycalc.features.currencyList.di.module.CurrenciesListActivityContextModule;
 import com.prod.realtimecurrencycalc.features.currencyList.di.module.CurrenciesListActivityMVPModule;
-import com.prod.realtimecurrencycalc.qualifiers.ActivityContext;
+import com.prod.realtimecurrencycalc.features.currencyList.mvp.CurrenciesListMVP;
 import com.prod.realtimecurrencycalc.scopes.ActivityScope;
-import com.prod.realtimecurrencycalc.scopes.ApplicationScope;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
-@ApplicationScope
-@Component(modules = {AdapterModule.class, CurrenciesListActivityMVPModule.class}, dependencies = ApplicationComponent.class)
+@ActivityScope
+@Subcomponent(modules = {AdapterModule.class, CurrenciesListActivityMVPModule.class})
 public interface CurrenciesListActivityComponent {
 
+    //CurrenciesListMVP.View provideView();
 
-    @ActivityContext
-    Context getContext();
+    void injectCurrenciesListActivity(CurrenciesListActivity currenciesListActivity);
 
-    void injectCurrenciesListActivity(CurrenciesListActivity currenciesListActivity);}
+    @Subcomponent.Builder
+    interface Builder {
+        CurrenciesListActivityComponent build();
+
+        CurrenciesListActivityComponent.Builder getCurrenciesListActivityMVPModule(CurrenciesListActivityMVPModule currenciesListActivityMVPModule);
+
+        CurrenciesListActivityComponent.Builder getCurrenciesListActivityContextModule(CurrenciesListActivityContextModule currenciesListActivityContextModule);
+
+    }
+}

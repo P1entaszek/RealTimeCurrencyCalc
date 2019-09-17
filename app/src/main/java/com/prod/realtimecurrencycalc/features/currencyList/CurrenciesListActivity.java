@@ -1,5 +1,6 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,33 +46,45 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currencies_list);
-
-        ApplicationComponent applicationComponent = CurrencyApplication.get(this).getApplicationComponent();
-        currenciesListActivityComponent = DaggerCurrenciesListActivityComponent.builder()
-                .mainActivityContextModule(new CurrenciesListActivityContextModule(this))
-                .mainActivityMvpModule(new CurrenciesListActivityMVPModule(this))
-                .applicationComponent(applicationComponent)
-                .build();
-        currenciesListActivityComponent.injectCurrenciesListActivity(this);
-        
+        injectComponent();
+        presenter.getCurrencies("DKK");
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activityContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
-        presenter.getCurrencies("EUR");
+
+
     }
+
+
+    private void injectComponent() {
+        if (currenciesListActivityComponent == null) {
+            Application application = getApplication();
+            ApplicationComponent applicationComponent = ((CurrencyApplication) application)
+                    .getApplicationComponent();
+            currenciesListActivityComponent = applicationComponent
+                    .getCurrencyComponentBuilder()
+                    .getCurrenciesListActivityContextModule(new CurrenciesListActivityContextModule(this))
+                    .getCurrenciesListActivityMVPModule(new CurrenciesListActivityMVPModule(this))
+                    .build();
+            currenciesListActivityComponent.injectCurrenciesListActivity(this);
+        }
+    }
+
 
     @Override
     public void updateData(String currencyName) {
+        Toast.makeText(getBaseContext(), "working click", Toast.LENGTH_LONG).show();
         presenter.getCurrencies(currencyName);
     }
 
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap) {
-            recyclerViewAdapter.setData(updatedCurrenciesMap);
+        recyclerViewAdapter.setData(updatedCurrenciesMap);
+
     }
 
     @Override
     public void showError(String errorMessage) {
-        Toast.makeText(activityContext, "Unable to load data, check Your internet access", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activityContext, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }
