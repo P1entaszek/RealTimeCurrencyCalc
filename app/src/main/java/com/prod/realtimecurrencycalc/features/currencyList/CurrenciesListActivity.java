@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.prod.realtimecurrencycalc.CurrencyApplication;
@@ -73,22 +75,20 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
 
     @Override
     public void updateData(String currencyName) {
-        Toast.makeText(getBaseContext(), "getCurrencies", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), "getCurrencies", Toast.LENGTH_LONG).show();
         presenter.getCurrencies(currencyName, 10.0);
     }
 
 
     @Override
     public void recalculateData(Double currencyMultiplier) {
-        Toast.makeText(getBaseContext(), "recalculating", Toast.LENGTH_LONG).show();
         presenter.recalculateCurrencies(currencyMultiplier);
     }
 
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap) {
         recyclerViewAdapter.setData(updatedCurrenciesMap);
-        //recyclerView.smoothScrollToPosition(0);
-
+        recyclerViewAdapter.notifyItemChanged(0);
     }
 
     @Override

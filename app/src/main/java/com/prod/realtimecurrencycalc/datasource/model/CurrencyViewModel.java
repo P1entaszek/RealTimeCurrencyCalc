@@ -1,22 +1,24 @@
 package com.prod.realtimecurrencycalc.datasource.model;
 
 public class CurrencyViewModel {
-    public CurrencyViewModel(int imageURl, String currencyShortcut, String currencyFullName, Double currencyValue) {
-        this.imageURl = imageURl;
+    private String currencyFullName;
+    private Double currencyValue;
+    private String countryCode;
+    private String currencyShortcut;
+
+    public CurrencyViewModel(String countryCode, String currencyShortcut, String currencyFullName, Double currencyValue) {
+        this.countryCode = countryCode;
         this.currencyShortcut = currencyShortcut;
         this.currencyFullName = currencyFullName;
         this.currencyValue = currencyValue;
     }
 
-    private int imageURl;
-    private String currencyShortcut;
-
-    public int getImageURl() {
-        return imageURl;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setImageURl(int imageURl) {
-        this.imageURl = imageURl;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getCurrencyShortcut() {
@@ -42,8 +44,5 @@ public class CurrencyViewModel {
     public void setCurrencyValue(Double currencyValue) {
         this.currencyValue = currencyValue;
     }
-
-    private String currencyFullName;
-    private Double currencyValue;
 
 }

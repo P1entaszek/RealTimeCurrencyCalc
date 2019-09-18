@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blongho.country_data.World;
 import com.bumptech.glide.Glide;
 import com.prod.realtimecurrencycalc.R;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
@@ -42,8 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
         holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
         holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
-        holder.currencyImage.setImageResource(data.get(position).getImageURl());
-
+        holder.currencyImage.setImageResource(World.getFlagOf(data.get(position).getCountryCode()));
     }
 
     @Override

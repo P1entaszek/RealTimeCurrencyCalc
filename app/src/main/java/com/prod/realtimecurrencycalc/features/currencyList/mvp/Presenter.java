@@ -1,6 +1,5 @@
 package com.prod.realtimecurrencycalc.features.currencyList.mvp;
 
-import com.blongho.country_data.Country;
 import com.blongho.country_data.Currency;
 import com.blongho.country_data.World;
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
@@ -9,7 +8,8 @@ import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
 import com.prod.realtimecurrencycalc.scopes.ActivityScope;
 import com.prod.realtimecurrencycalc.utils.rx.AppSchedulersProvider;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,14 +49,13 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                         ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
                         ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
                         List<CurrencyViewModel> currencies = new ArrayList<>();
+
                         for (int i = 0; i < keyList.size(); i++) {
                             if (keyList.get(i).equals(currencyKey)) {
-                                //TODO Dodac parsowanie kodu waluty do kodu panstwa
-                                int flagOf = World.getFlagOf(i);
-                                currencies.add(0, new CurrencyViewModel(752, keyList.get(i), "", currencyMultiplier));
+                                //TODO Wyciagnac pelna nazwe z waluty
+                                currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), "", currencyMultiplier));
                             } else {
-                                int flagOf = World.getFlagOf(i);
-                                currencies.add(new CurrencyViewModel(752, keyList.get(i), "", valuesList.get(i)));
+                                currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), "", valuesList.get(i)));
                             }
                         }
                         unitCurrencies = currencies;
@@ -64,7 +63,7 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                             if (!currency.getCurrencyShortcut().equals(currencyKey)) {
                                 Double currencyValue = currency.getCurrencyValue();
                                 currencyValue *= currencyMultiplier;
-                                currency.setCurrencyValue(currencyValue);
+                                currency.setCurrencyValue(roundTheValue(currencyValue));
                             }
                         }
                         view.showAllCurrencies(currencies);
@@ -80,6 +79,16 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     }
                 });
+    }
+
+    private String getFlagCode(String currencyCode){
+        return currencyCode.substring(0,2).toLowerCase();
+    }
+
+    private Double roundTheValue(Double value){
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     @Override
