@@ -53,9 +53,9 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                         for (int i = 0; i < keyList.size(); i++) {
                             if (keyList.get(i).equals(currencyKey)) {
                                 //TODO Wyciagnac pelna nazwe z waluty
-                                currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), "", currencyMultiplier));
+                                currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), getCurrencyFullName(currencyKey), currencyMultiplier));
                             } else {
-                                currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), "", valuesList.get(i)));
+                                currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), getCurrencyFullName(keyList.get(i)), valuesList.get(i)));
                             }
                         }
                         unitCurrencies = currencies;
@@ -79,6 +79,14 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     }
                 });
+    }
+
+    private String getCurrencyFullName(String  currencyCode){
+        String fullName ="Currency full name";
+        for (Currency allCurrency : World.getAllCurrencies()) {
+            if(allCurrency.getCode().equalsIgnoreCase(currencyCode)) fullName = allCurrency.getName();
+        }
+        return fullName;
     }
 
     private String getFlagCode(String currencyCode){
