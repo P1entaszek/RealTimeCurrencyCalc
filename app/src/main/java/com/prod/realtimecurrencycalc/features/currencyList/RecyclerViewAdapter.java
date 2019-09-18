@@ -1,8 +1,5 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
-import android.annotation.SuppressLint;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.prod.realtimecurrencycalc.R;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
 
@@ -23,6 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CurrencyViewModel> data;
     private TouchListener touchListener;
+
 
     @Inject
     public RecyclerViewAdapter(TouchListener touchListener) {
@@ -40,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
         holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
         holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
-
+        holder.currencyImage.setImageResource(data.get(position).getImageURl());
 
     }
 
@@ -63,6 +65,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             currencyFullname = itemView.findViewById(R.id.currencyName);
             currencyShortcut = itemView.findViewById(R.id.currencyShortcut);
             currencyValue = itemView.findViewById(R.id.currencyValue);
+            currencyImage = itemView.findViewById(R.id.currencyImage);
 
             currencyValue.setOnTouchListener(new View.OnTouchListener() {
                 @Override

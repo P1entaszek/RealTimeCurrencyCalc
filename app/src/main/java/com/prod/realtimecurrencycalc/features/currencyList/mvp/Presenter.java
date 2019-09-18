@@ -1,5 +1,8 @@
 package com.prod.realtimecurrencycalc.features.currencyList.mvp;
 
+import com.blongho.country_data.Country;
+import com.blongho.country_data.Currency;
+import com.blongho.country_data.World;
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
 import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
@@ -48,9 +51,12 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                         List<CurrencyViewModel> currencies = new ArrayList<>();
                         for (int i = 0; i < keyList.size(); i++) {
                             if (keyList.get(i).equals(currencyKey)) {
-                                currencies.add(0, new CurrencyViewModel("", keyList.get(i), "", currencyMultiplier));
+                                //TODO Dodac parsowanie kodu waluty do kodu panstwa
+                                int flagOf = World.getFlagOf(i);
+                                currencies.add(0, new CurrencyViewModel(752, keyList.get(i), "", currencyMultiplier));
                             } else {
-                                currencies.add(new CurrencyViewModel("", keyList.get(i), "", valuesList.get(i)));
+                                int flagOf = World.getFlagOf(i);
+                                currencies.add(new CurrencyViewModel(752, keyList.get(i), "", valuesList.get(i)));
                             }
                         }
                         unitCurrencies = currencies;
