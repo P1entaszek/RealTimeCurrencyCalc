@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
 public class Presenter implements CurrenciesListMVP.Presenter {
     APIService apiService;
     CurrenciesListMVP.View view;
-    List<CurrencyViewModel> allCurrencies = new ArrayList<>();
+    List<CurrencyViewModel> unitCurrencies = new ArrayList<>();
 
     @Inject
     public Presenter(APIService apiService, CurrenciesListMVP.View view) {
@@ -46,17 +46,21 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                         ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
                         ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
                         List<CurrencyViewModel> currencies = new ArrayList<>();
-                        for (int i=0; i<keyList.size(); i++) {
-                            if(keyList.get(i).equals(currencyKey)){
-                                currencies.add(0,new CurrencyViewModel("", keyList.get(i), "",  currencyMultiplier));
+                        for (int i = 0; i < keyList.size(); i++) {
+                            if (keyList.get(i).equals(currencyKey)) {
+                                currencies.add(0, new CurrencyViewModel("", keyList.get(i), "", currencyMultiplier));
+                            } else {
+                                currencies.add(new CurrencyViewModel("", keyList.get(i), "", valuesList.get(i)));
                             }
-
-                            else {
-                                currencies.add(new CurrencyViewModel("", keyList.get(i), "", valuesList.get(i)*currencyMultiplier));
-                            }
-
                         }
-                        allCurrencies=currencies;
+                        unitCurrencies = currencies;
+                        for (CurrencyViewModel currency : currencies) {
+                            if (!currency.getCurrencyShortcut().equals(currencyKey)) {
+                                Double currencyValue = currency.getCurrencyValue();
+                                currencyValue *= currencyMultiplier;
+                                currency.setCurrencyValue(currencyValue);
+                            }
+                        }
                         view.showAllCurrencies(currencies);
                     }
 

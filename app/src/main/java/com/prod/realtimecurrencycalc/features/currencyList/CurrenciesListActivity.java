@@ -74,9 +74,8 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     @Override
     public void updateData(String currencyName) {
         Toast.makeText(getBaseContext(), "getCurrencies", Toast.LENGTH_LONG).show();
-        presenter.getCurrencies(currencyName, 100.0);
+        presenter.getCurrencies(currencyName, 10.0);
     }
-
 
 
     @Override
@@ -88,6 +87,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap) {
         recyclerViewAdapter.setData(updatedCurrenciesMap);
+        //recyclerView.smoothScrollToPosition(0);
 
     }
 

@@ -37,9 +37,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
-            holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
-            holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
+        holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
+        holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
+        holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
 
 
     }
@@ -57,7 +57,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private EditText currencyValue;
         private ConstraintLayout constraintLayoutContainer;
 
-        @SuppressLint("ClickableViewAccessibility")
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -65,26 +64,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             currencyShortcut = itemView.findViewById(R.id.currencyShortcut);
             currencyValue = itemView.findViewById(R.id.currencyValue);
 
-
-
-           currencyValue.setOnTouchListener(new View.OnTouchListener() {
-               @Override
-               public boolean onTouch(View v, MotionEvent event) {
-                   if(getAdapterPosition()==0){
-                       touchListener.recalculateData(data.get(0).getCurrencyValue());
-                   }
-                   else{
-                       touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
-                   }
-
-               return true;
-               }
-           });
+            currencyValue.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (getAdapterPosition() == 0) {
+                        touchListener.recalculateData(data.get(0).getCurrencyValue());
+                    } else {
+                        touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
+                    }
+                    return true;
+                }
+            });
         }
     }
 
     public interface TouchListener {
         void updateData(String currencyName);
+
         void recalculateData(Double currencyMultiplier);
     }
 
