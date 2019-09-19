@@ -1,6 +1,7 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
 import android.annotation.SuppressLint;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,10 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CurrencyViewModel> data;
     private TouchListener touchListener;
+    private ClickListener clickListener;
 
 
     @Inject
-    public RecyclerViewAdapter(TouchListener touchListener) {
+    public RecyclerViewAdapter(TouchListener touchListener, ClickListener clickListener) {
+        this.clickListener = clickListener;
         this.touchListener = touchListener;
         data = new ArrayList<>();
     }
@@ -68,26 +71,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             currencyShortcut = itemView.findViewById(R.id.currencyShortcut);
             currencyValue = itemView.findViewById(R.id.currencyValue);
             currencyImage = itemView.findViewById(R.id.currencyImage);
+            constraintLayoutContainer = itemView.findViewById(R.id.constraintLayout);
 
-            currencyImage.setOnTouchListener(new View.OnTouchListener() {
+
+            constraintLayoutContainer.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (getAdapterPosition() != 0) {
-                       // touchListener.recalculateData(data.get(0).getCurrencyValue());
                         touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
                     }
                     return true;
                 }
             });
+        currencyValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
+                return true;
+            }
+        });
         }
     }
 
-    
+
+    public interface ClickListener {
+        void recalculateData(Double currencyMultiplier);
+    }
 
     public interface TouchListener {
         void updateData(String currencyName);
-
-        void recalculateData(Double currencyMultiplier);
     }
 
     public void setData(List<CurrencyViewModel> data) {

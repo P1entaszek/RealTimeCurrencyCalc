@@ -23,6 +23,7 @@ public class Presenter implements CurrenciesListMVP.Presenter {
     APIService apiService;
     CurrenciesListMVP.View view;
     List<CurrencyViewModel> unitCurrencies = new ArrayList<>();
+    String currencyKey;
 
     @Inject
     public Presenter(APIService apiService, CurrenciesListMVP.View view) {
@@ -33,6 +34,7 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
     @Override
     public void getCurrencies(final String currencyKey, final Double currencyMultiplier) {
+        this.currencyKey = currencyKey;
         apiService.
                 getSearchedCurrencies(currencyKey)
                 .subscribeOn(AppSchedulersProvider.getInstance().io())
@@ -101,12 +103,16 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
     @Override
     public void recalculateCurrencies(Double currencyMultiplier) {
-        List<CurrencyViewModel> unitCurrencies = this.unitCurrencies;
-        for (CurrencyViewModel currency : unitCurrencies) {
-            Double currencyValue = currency.getCurrencyValue();
-            currencyValue *= currencyMultiplier;
-            currency.setCurrencyValue(currencyValue);
+        List<CurrencyViewModel> currencies = this.unitCurrencies;
+        for (CurrencyViewModel currency : currencies) {
+            if(currency.getCurrencyShortcut().equalsIgnoreCase(currencyKey)) currency.setCurrencyValue(currencyMultiplier);
+            else{
+                Double currencyValue = currency.getCurrencyValue();
+                currencyValue *= currencyMultiplier;
+                currency.setCurrencyValue(currencyValue);
+            }
         }
-        view.showAllCurrencies(unitCurrencies);
+        view.showAllCurrencies(currencies);
+        
     }
 }
