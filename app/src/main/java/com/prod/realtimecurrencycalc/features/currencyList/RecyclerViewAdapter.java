@@ -1,5 +1,6 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private EditText currencyValue;
         private ConstraintLayout constraintLayoutContainer;
 
+        @SuppressLint("ClickableViewAccessibility")
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -67,12 +69,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             currencyValue = itemView.findViewById(R.id.currencyValue);
             currencyImage = itemView.findViewById(R.id.currencyImage);
 
-            currencyValue.setOnTouchListener(new View.OnTouchListener() {
+            currencyImage.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (getAdapterPosition() == 0) {
-                        touchListener.recalculateData(data.get(0).getCurrencyValue());
-                    } else {
+                    if (getAdapterPosition() != 0) {
+                       // touchListener.recalculateData(data.get(0).getCurrencyValue());
                         touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
                     }
                     return true;
@@ -80,6 +81,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
         }
     }
+
+    
 
     public interface TouchListener {
         void updateData(String currencyName);

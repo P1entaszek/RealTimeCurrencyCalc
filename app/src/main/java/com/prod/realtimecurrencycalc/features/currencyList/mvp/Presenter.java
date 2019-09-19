@@ -101,12 +101,12 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
     @Override
     public void recalculateCurrencies(Double currencyMultiplier) {
-      /*  for (CurrencyViewModel currency : currencies) {
+        List<CurrencyViewModel> unitCurrencies = this.unitCurrencies;
+        for (CurrencyViewModel currency : unitCurrencies) {
             Double currencyValue = currency.getCurrencyValue();
             currencyValue *= currencyMultiplier;
             currency.setCurrencyValue(currencyValue);
         }
-        view.showAllCurrencies(currencies);
-*/
+        view.showAllCurrencies(unitCurrencies);
     }
 }

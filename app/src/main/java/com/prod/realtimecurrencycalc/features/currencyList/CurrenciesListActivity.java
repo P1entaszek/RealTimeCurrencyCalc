@@ -88,7 +88,6 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap) {
         recyclerViewAdapter.setData(updatedCurrenciesMap);
-        recyclerViewAdapter.notifyItemChanged(0);
     }
 
     @Override
