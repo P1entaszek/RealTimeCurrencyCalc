@@ -9,7 +9,7 @@ import io.reactivex.annotations.NonNull;
 public interface CurrenciesListMVP {
 
     interface View{
-        void showAllCurrencies(final @NonNull List<CurrencyViewModel> updatedCurrenciesMap);
+        void showAllCurrencies(final @NonNull List<CurrencyViewModel> updatedCurrenciesMap, Double currencyMultiplier);
         void showError(final @NonNull String errorMessage);
     }
 

@@ -13,12 +13,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blongho.country_data.World;
-import com.bumptech.glide.Glide;
 import com.prod.realtimecurrencycalc.R;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,6 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<CurrencyViewModel> data;
     private TouchListener touchListener;
     private ClickListener clickListener;
+    private Map<String, Double> currenciesMultipliedMap;
 
 
     @Inject
@@ -35,6 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.clickListener = clickListener;
         this.touchListener = touchListener;
         data = new ArrayList<>();
+        currenciesMultipliedMap = new HashMap<>();
     }
 
     @Override
@@ -44,10 +49,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Double currencyValue = currenciesMultipliedMap.get(data.get(position).getCurrencyShortcut());
         holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
-        holder.currencyValue.setText(data.get(position).getCurrencyValue().toString());
+        holder.currencyValue.setText(roundTheValue(currencyValue).toString());
         holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
         holder.currencyImage.setImageResource(World.getFlagOf(data.get(position).getCountryCode()));
+    }
+
+    private Double roundTheValue(Double value) {
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     @Override
@@ -83,13 +95,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     return true;
                 }
             });
-        currencyValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
-                return true;
-            }
-        });
+            currencyValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(getAdapterPosition()==0) clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
+                    return true;
+                }
+            });
         }
     }
 
@@ -102,8 +114,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void updateData(String currencyName);
     }
 
-    public void setData(List<CurrencyViewModel> data) {
+    public void setData(List<CurrencyViewModel> data, final Double currencyMultiplier) {
         this.data = data;
+        currenciesMultipliedMap.clear();
+
+        for (int i = 1; i < data.size(); i++) {
+            Double currencyValue = data.get(i).getCurrencyValue();
+            currencyValue *= currencyMultiplier;
+            currenciesMultipliedMap.put(data.get(i).getCurrencyShortcut(), currencyValue);
+        }
+        currenciesMultipliedMap.put(data.get(0).getCurrencyShortcut(), currencyMultiplier);
         notifyDataSetChanged();
     }
 }

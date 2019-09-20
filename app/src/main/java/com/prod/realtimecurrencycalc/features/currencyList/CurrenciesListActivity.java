@@ -2,13 +2,15 @@ package com.prod.realtimecurrencycalc.features.currencyList;
 
 import android.app.Application;
 import android.content.Context;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.prod.realtimecurrencycalc.CurrencyApplication;
@@ -88,9 +90,9 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     }
 
     @Override
-    public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap) {
+    public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap, Double currencyMultiplier) {
         Log.d("myviewshow", updatedCurrenciesMap.get(0).getCurrencyValue().toString());
-        recyclerViewAdapter.setData(updatedCurrenciesMap);
+        recyclerViewAdapter.setData(updatedCurrenciesMap, currencyMultiplier);
     }
 
     @Override

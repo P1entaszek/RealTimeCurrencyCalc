@@ -20,10 +20,9 @@ import io.reactivex.disposables.Disposable;
 
 @ActivityScope
 public class Presenter implements CurrenciesListMVP.Presenter {
-    APIService apiService;
-    CurrenciesListMVP.View view;
-    List<CurrencyViewModel> unitCurrencies = new ArrayList<>();
-    String currencyKey;
+    private APIService apiService;
+    private CurrenciesListMVP.View view;
+    private List<CurrencyViewModel> unitCurrencies = new ArrayList<>();
 
     @Inject
     public Presenter(APIService apiService, CurrenciesListMVP.View view) {
@@ -31,10 +30,8 @@ public class Presenter implements CurrenciesListMVP.Presenter {
         this.view = view;
     }
 
-
     @Override
     public void getCurrencies(final String currencyKey, final Double currencyMultiplier) {
-        this.currencyKey = currencyKey;
         apiService.
                 getSearchedCurrencies(currencyKey)
                 .subscribeOn(AppSchedulersProvider.getInstance().io())
@@ -51,24 +48,15 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                         ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
                         ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
                         List<CurrencyViewModel> currencies = new ArrayList<>();
-
                         for (int i = 0; i < keyList.size(); i++) {
                             if (keyList.get(i).equals(currencyKey)) {
-                                //TODO Wyciagnac pelna nazwe z waluty
                                 currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), getCurrencyFullName(currencyKey), currencyMultiplier));
                             } else {
                                 currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), getCurrencyFullName(keyList.get(i)), valuesList.get(i)));
                             }
                         }
-                        unitCurrencies = currencies;
-                        for (CurrencyViewModel currency : currencies) {
-                            if (!currency.getCurrencyShortcut().equals(currencyKey)) {
-                                Double currencyValue = currency.getCurrencyValue();
-                                currencyValue *= currencyMultiplier;
-                                currency.setCurrencyValue(roundTheValue(currencyValue));
-                            }
-                        }
-                        view.showAllCurrencies(currencies);
+                        unitCurrencies = new ArrayList<>(currencies);
+                        view.showAllCurrencies(currencies, currencyMultiplier);
                     }
 
                     @Override
@@ -83,36 +71,21 @@ public class Presenter implements CurrenciesListMVP.Presenter {
                 });
     }
 
-    private String getCurrencyFullName(String  currencyCode){
-        String fullName ="Currency full name";
+    private String getCurrencyFullName(String currencyCode) {
+        String fullName = "Currency full name";
         for (Currency allCurrency : World.getAllCurrencies()) {
-            if(allCurrency.getCode().equalsIgnoreCase(currencyCode)) fullName = allCurrency.getName();
+            if (allCurrency.getCode().equalsIgnoreCase(currencyCode))
+                fullName = allCurrency.getName();
         }
         return fullName;
     }
 
-    private String getFlagCode(String currencyCode){
-        return currencyCode.substring(0,2).toLowerCase();
-    }
-
-    private Double roundTheValue(Double value){
-        BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+    private String getFlagCode(String currencyCode) {
+        return currencyCode.substring(0, 2).toLowerCase();
     }
 
     @Override
     public void recalculateCurrencies(Double currencyMultiplier) {
-        List<CurrencyViewModel> currencies = this.unitCurrencies;
-        for (CurrencyViewModel currency : currencies) {
-            if(currency.getCurrencyShortcut().equalsIgnoreCase(currencyKey)) currency.setCurrencyValue(currencyMultiplier);
-            else{
-                Double currencyValue = currency.getCurrencyValue();
-                currencyValue *= currencyMultiplier;
-                currency.setCurrencyValue(currencyValue);
-            }
-        }
-        view.showAllCurrencies(currencies);
-        
+        view.showAllCurrencies(this.unitCurrencies, currencyMultiplier);
     }
 }
