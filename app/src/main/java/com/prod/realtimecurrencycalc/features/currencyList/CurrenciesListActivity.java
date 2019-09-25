@@ -31,7 +31,9 @@ import javax.inject.Inject;
 public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.TouchListener, CurrenciesListMVP.View, RecyclerViewAdapter.ClickListener {
 
     private RecyclerView recyclerView;
-    CurrenciesListActivityComponent currenciesListActivityComponent;
+    private final static Double initCurrencyMultiplier = 100.0;
+    private final static String initCurrencyShortcut = "PLN";
+    private CurrenciesListActivityComponent currenciesListActivityComponent;
 
     @Inject
     public RecyclerViewAdapter recyclerViewAdapter;
@@ -52,7 +54,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currencies_list);
         injectComponent();
-        presenter.getCurrencies("DKK", 100.0);
+        presenter.getCurrencies(initCurrencyShortcut, initCurrencyMultiplier);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -78,20 +80,17 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
 
     @Override
     public void updateData(String currencyName) {
-        Log.d("myviewUpdate", "10");
-        presenter.getCurrencies(currencyName, 100.0);
+        presenter.getCurrencies(currencyName, initCurrencyMultiplier);
     }
 
 
     @Override
     public void recalculateData(Double currencyMultiplier) {
-        Log.d("myviewRecalculate", currencyMultiplier.toString());
         presenter.recalculateCurrencies(currencyMultiplier);
     }
 
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap, Double currencyMultiplier) {
-        Log.d("myviewshow", updatedCurrenciesMap.get(0).getCurrencyValue().toString());
         recyclerViewAdapter.setData(updatedCurrenciesMap, currencyMultiplier);
     }
 

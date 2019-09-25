@@ -45,16 +45,7 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     @Override
                     public void onNext(CurrenciesApiModel currenciesApiModel) {
-                        ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
-                        ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
-                        List<CurrencyViewModel> currencies = new ArrayList<>();
-                        for (int i = 0; i < keyList.size(); i++) {
-                            if (keyList.get(i).equals(currencyKey)) {
-                                currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), getCurrencyFullName(currencyKey), currencyMultiplier));
-                            } else {
-                                currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), getCurrencyFullName(keyList.get(i)), valuesList.get(i)));
-                            }
-                        }
+                        List<CurrencyViewModel> currencies = fetchCountryDataWithApiData(currenciesApiModel, currencyKey, currencyMultiplier);
                         unitCurrencies = new ArrayList<>(currencies);
                         view.showAllCurrencies(currencies, currencyMultiplier);
                     }
@@ -69,6 +60,20 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
                     }
                 });
+    }
+
+    private List<CurrencyViewModel> fetchCountryDataWithApiData(CurrenciesApiModel currenciesApiModel, String currencyKey, Double currencyMultiplier) {
+        ArrayList<String> keyList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().keySet());
+        ArrayList<Double> valuesList = new ArrayList<>(currenciesApiModel.getCurrenciesMap().values());
+        List<CurrencyViewModel> currencies = new ArrayList<>();
+        for (int i = 0; i < keyList.size(); i++) {
+            if (keyList.get(i).equals(currencyKey)) {
+                currencies.add(0, new CurrencyViewModel(getFlagCode(currencyKey), keyList.get(i), getCurrencyFullName(currencyKey), currencyMultiplier));
+            } else {
+                currencies.add(new CurrencyViewModel(getFlagCode(keyList.get(i)), keyList.get(i), getCurrencyFullName(keyList.get(i)), valuesList.get(i)));
+            }
+        }
+        return currencies;
     }
 
     private String getCurrencyFullName(String currencyCode) {
