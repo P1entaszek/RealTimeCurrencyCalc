@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import com.prod.realtimecurrencycalc.CurrencyApplication;
@@ -28,7 +27,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.TouchListener, CurrenciesListMVP.View, RecyclerViewAdapter.ClickListener {
+public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.LongClickListener, CurrenciesListMVP.View, RecyclerViewAdapter.ClickListener {
 
     private RecyclerView recyclerView;
     private final static Double initCurrencyMultiplier = 100.0;
@@ -40,7 +39,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
 
     @Inject
     @ApplicationContext
-    public Context mContext;
+    public Context appContext;
 
     @Inject
     @ActivityContext
@@ -56,7 +55,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
         injectComponent();
         presenter.getCurrencies(initCurrencyShortcut, initCurrencyMultiplier);
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activityContext));
         recyclerView.setAdapter(recyclerViewAdapter);
 
 
@@ -92,6 +91,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap, Double currencyMultiplier) {
         recyclerViewAdapter.setData(updatedCurrenciesMap, currencyMultiplier);
+        recyclerView.scrollToPosition(0);
     }
 
     @Override

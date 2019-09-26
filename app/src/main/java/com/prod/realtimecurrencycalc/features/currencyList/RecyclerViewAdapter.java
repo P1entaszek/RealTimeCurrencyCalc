@@ -29,15 +29,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CurrencyViewModel> data;
-    private TouchListener touchListener;
+    private LongClickListener longClickListener;
     private ClickListener clickListener;
     private Map<String, Double> currenciesMultipliedMap;
 
-
     @Inject
-    public RecyclerViewAdapter(TouchListener touchListener, ClickListener clickListener) {
+    public RecyclerViewAdapter(LongClickListener longClickListener, ClickListener clickListener) {
         this.clickListener = clickListener;
-        this.touchListener = touchListener;
+        this.longClickListener = longClickListener;
         data = new ArrayList<>();
         currenciesMultipliedMap = new HashMap<>();
     }
@@ -53,7 +52,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.currencyShortcut.setText(data.get(position).getCurrencyShortcut());
         holder.currencyValue.setText(roundTheValue(currencyValue).toString());
         holder.currencyFullname.setText(data.get(position).getCurrencyFullName());
-        holder.currencyImage.setImageResource(World.getFlagOf(data.get(position).getCountryCode()));
+        if(data.get(position).getCurrencyShortcut().equalsIgnoreCase("EUR")) holder.currencyImage.setImageResource(R.drawable.eu);
+        else holder.currencyImage.setImageResource(World.getFlagOf(data.get(position).getCountryCode()));
     }
 
     private Double roundTheValue(Double value) {
@@ -86,21 +86,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             constraintLayoutContainer = itemView.findViewById(R.id.constraintLayout);
 
 
-            constraintLayoutContainer.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (getAdapterPosition() != 0) {
-                        touchListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
-                    }
-                    return true;
+            constraintLayoutContainer.setOnLongClickListener((v) -> {
+                if (getAdapterPosition() != 0) {
+                    longClickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
                 }
+                return true;
             });
-            currencyValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if(getAdapterPosition()==0) clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
-                    return true;
-                }
+            currencyValue.setOnEditorActionListener((v, actionId, event) -> {
+                if (getAdapterPosition() == 0)
+                    clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
+                return true;
             });
         }
     }
@@ -110,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void recalculateData(Double currencyMultiplier);
     }
 
-    public interface TouchListener {
+    public interface LongClickListener {
         void updateData(String currencyName);
     }
 

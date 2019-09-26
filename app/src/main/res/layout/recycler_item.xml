@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/currencyImage"
         app:layout_constraintTop_toBottomOf="@+id/currencyShortcut"
-        tools:text="US Dollar" />
+        tools:text="Euro" />
 
     <TextView
         android:id="@+id/currencyShortcut"
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/currencyImage"
         app:layout_constraintTop_toTopOf="@+id/currencyImage"
-        tools:text="USD" />
+        tools:text="EUR" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/currencyImage"
@@ -50,6 +50,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/us" />
+        android:src="@drawable/eu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
