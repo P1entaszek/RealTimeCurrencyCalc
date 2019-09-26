@@ -6,50 +6,67 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+
     <EditText
         android:id="@+id/currencyValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
         android:gravity="end"
         android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/currencyImage"
+        app:layout_constraintBottom_toBottomOf="@+id/flagConstraint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/currencyName"
-        app:layout_constraintTop_toTopOf="@+id/currencyImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/flagConstraint"
+        app:layout_constraintTop_toTopOf="@+id/flagConstraint"
+        android:imeOptions="actionDone"
         tools:text="150.12" />
 
-    <TextView
-        android:id="@+id/currencyName"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flagConstraint"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/currencyImage"
-        app:layout_constraintTop_toBottomOf="@+id/currencyShortcut"
-        tools:text="Euro" />
-
-    <TextView
-        android:id="@+id/currencyShortcut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/currencyImage"
-        app:layout_constraintTop_toTopOf="@+id/currencyImage"
-        tools:text="EUR" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/currencyImage"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/currencyValue"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/eu" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/currencyShortcut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/currencyImage"
+            app:layout_constraintTop_toTopOf="@+id/currencyImage"
+            tools:text="EUR" />
+
+        <TextView
+            android:id="@+id/currencyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/currencyImage"
+            app:layout_constraintTop_toBottomOf="@+id/currencyShortcut"
+            tools:text="Euro" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/currencyImage"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:src="@drawable/eu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

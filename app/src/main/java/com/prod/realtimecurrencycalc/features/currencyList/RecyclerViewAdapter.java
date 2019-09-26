@@ -1,9 +1,7 @@
 package com.prod.realtimecurrencycalc.features.currencyList;
 
 import android.annotation.SuppressLint;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -29,14 +27,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CurrencyViewModel> data;
-    private LongClickListener longClickListener;
     private ClickListener clickListener;
+    private ClickEnterListener clickEnterListener;
     private Map<String, Double> currenciesMultipliedMap;
 
     @Inject
-    public RecyclerViewAdapter(LongClickListener longClickListener, ClickListener clickListener) {
+    public RecyclerViewAdapter(ClickListener clickListener, ClickEnterListener clickEnterListener) {
+        this.clickEnterListener = clickEnterListener;
         this.clickListener = clickListener;
-        this.longClickListener = longClickListener;
         data = new ArrayList<>();
         currenciesMultipliedMap = new HashMap<>();
     }
@@ -83,29 +81,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             currencyShortcut = itemView.findViewById(R.id.currencyShortcut);
             currencyValue = itemView.findViewById(R.id.currencyValue);
             currencyImage = itemView.findViewById(R.id.currencyImage);
-            constraintLayoutContainer = itemView.findViewById(R.id.constraintLayout);
+            constraintLayoutContainer = itemView.findViewById(R.id.flagConstraint);
 
 
-            constraintLayoutContainer.setOnLongClickListener((v) -> {
-                if (getAdapterPosition() != 0) {
-                    longClickListener.updateData(data.get(getAdapterPosition()).getCurrencyShortcut());
+            constraintLayoutContainer.setOnClickListener(view -> {
+                if (ViewHolder.this.getAdapterPosition() != 0) {
+                    clickListener.updateData(data.get(ViewHolder.this.getAdapterPosition()).getCurrencyShortcut());
                 }
-                return true;
             });
             currencyValue.setOnEditorActionListener((v, actionId, event) -> {
                 if (getAdapterPosition() == 0)
-                    clickListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
+                    clickEnterListener.recalculateData(Double.valueOf(currencyValue.getText().toString()));
                 return true;
             });
         }
     }
 
 
-    public interface ClickListener {
+    public interface ClickEnterListener {
         void recalculateData(Double currencyMultiplier);
     }
 
-    public interface LongClickListener {
+    public interface ClickListener {
         void updateData(String currencyName);
     }
 

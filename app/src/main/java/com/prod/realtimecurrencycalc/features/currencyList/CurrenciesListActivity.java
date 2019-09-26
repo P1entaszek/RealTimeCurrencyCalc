@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.LongClickListener, CurrenciesListMVP.View, RecyclerViewAdapter.ClickListener {
+public class CurrenciesListActivity extends AppCompatActivity implements RecyclerViewAdapter.ClickListener, CurrenciesListMVP.View, RecyclerViewAdapter.ClickEnterListener {
 
     private RecyclerView recyclerView;
     private final static Double initCurrencyMultiplier = 100.0;

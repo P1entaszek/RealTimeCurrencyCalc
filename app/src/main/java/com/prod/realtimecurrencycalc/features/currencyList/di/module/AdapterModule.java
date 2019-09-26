@@ -11,19 +11,19 @@ import dagger.Provides;
 public class AdapterModule {
     @Provides
     @ActivityScope
-    public RecyclerViewAdapter getCurrenciesList(RecyclerViewAdapter.LongClickListener longClickListener, RecyclerViewAdapter.ClickListener clickListener) {
-        return new RecyclerViewAdapter(longClickListener, clickListener);
+    public RecyclerViewAdapter getCurrenciesList(RecyclerViewAdapter.ClickListener clickListener, RecyclerViewAdapter.ClickEnterListener clickEnterListener) {
+        return new RecyclerViewAdapter(clickListener, clickEnterListener);
     }
 
     @Provides
     @ActivityScope
-    public RecyclerViewAdapter.LongClickListener getLongClickListener(CurrenciesListActivity currenciesListActivity) {
+    public RecyclerViewAdapter.ClickListener getLongClickListener(CurrenciesListActivity currenciesListActivity) {
         return currenciesListActivity;
     }
 
     @Provides
     @ActivityScope
-    public RecyclerViewAdapter.ClickListener getClickListener(CurrenciesListActivity currenciesListActivity) {
+    public RecyclerViewAdapter.ClickEnterListener getClickListener(CurrenciesListActivity currenciesListActivity) {
         return currenciesListActivity;
     }
 }
