@@ -1,7 +1,7 @@
 package com.prod.realtimecurrencycalc.di.component;
 
 import com.prod.realtimecurrencycalc.CurrencyApplication;
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 import di.RetrofitModule;
 import com.prod.realtimecurrencycalc.di.module.ContextModule;
 import com.prod.realtimecurrencycalc.features.currencyList.di.component.CurrenciesListActivityComponent;

@@ -4,12 +4,10 @@ import com.blongho.country_data.Currency;
 import com.blongho.country_data.World;
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
 import com.prod.realtimecurrencycalc.datasource.model.CurrencyViewModel;
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 import com.prod.realtimecurrencycalc.scopes.ActivityScope;
 import com.prod.realtimecurrencycalc.utils.rx.AppSchedulersProvider;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,11 +76,15 @@ public class Presenter implements CurrenciesListMVP.Presenter {
 
     private String getCurrencyFullName(String currencyCode) {
         String fullName = "Currency full name";
-        for (Currency allCurrency : World.getAllCurrencies()) {
+        for (Currency allCurrency : getAllCountriesForCurrencies()) {
             if (allCurrency.getCode().equalsIgnoreCase(currencyCode))
                 fullName = allCurrency.getName();
         }
         return fullName;
+    }
+
+    public List<Currency> getAllCountriesForCurrencies() {
+        return World.getAllCurrencies();
     }
 
     private String getFlagCode(String currencyCode) {

@@ -2,7 +2,7 @@ package di;
 
 import com.prod.realtimecurrencycalc.TestUtils.TestUtils;
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 
 import io.reactivex.Observable;
 

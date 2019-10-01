@@ -1,6 +1,6 @@
 package com.prod.realtimecurrencycalc.features.currencyList.di.module;
 
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 import com.prod.realtimecurrencycalc.features.currencyList.mvp.CurrenciesListMVP;
 import com.prod.realtimecurrencycalc.features.currencyList.mvp.Presenter;
 import com.prod.realtimecurrencycalc.scopes.ActivityScope;

@@ -1,4 +1,4 @@
-package com.prod.realtimecurrencycalc.datasource.retrofit;
+package com.prod.realtimecurrencycalc.datasource.service;
 
 import com.prod.realtimecurrencycalc.datasource.model.CurrenciesApiModel;
 

@@ -57,10 +57,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activityContext));
         recyclerView.setAdapter(recyclerViewAdapter);
-
-
     }
-
 
     private void injectComponent() {
         if (currenciesListActivityComponent == null) {
@@ -91,7 +88,7 @@ public class CurrenciesListActivity extends AppCompatActivity implements Recycle
     @Override
     public void showAllCurrencies(List<CurrencyViewModel> updatedCurrenciesMap, Double currencyMultiplier) {
         recyclerViewAdapter.setData(updatedCurrenciesMap, currencyMultiplier);
-        recyclerView.scrollToPosition(0);
+        if(recyclerView!=null) recyclerView.scrollToPosition(0);
     }
 
     @Override

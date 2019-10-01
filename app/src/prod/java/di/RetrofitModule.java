@@ -1,7 +1,7 @@
 package di;
 
 
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 import com.prod.realtimecurrencycalc.scopes.ApplicationScope;
 
 import dagger.Module;

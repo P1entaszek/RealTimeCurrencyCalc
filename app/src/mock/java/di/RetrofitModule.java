@@ -1,9 +1,7 @@
 package di;
 
 
-import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
-
-import javax.inject.Singleton;
+import com.prod.realtimecurrencycalc.datasource.service.APIService;
 
 import dagger.Module;
 import dagger.Provides;
