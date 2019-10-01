@@ -1,4 +1,4 @@
-package com.prod.realtimecurrencycalc.datasource.retrofit.di;
+package di;
 
 
 import com.prod.realtimecurrencycalc.datasource.retrofit.APIService;
@@ -31,7 +31,6 @@ public class RetrofitModule {
                 .client(okHttpClient)
                 .build();
     }
-
     @Provides
     @ApplicationScope
     OkHttpClient getOkHttpCleint(HttpLoggingInterceptor httpLoggingInterceptor) {

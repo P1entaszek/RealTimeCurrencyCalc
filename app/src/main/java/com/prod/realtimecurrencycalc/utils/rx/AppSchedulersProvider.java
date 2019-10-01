@@ -1,5 +1,8 @@
 package com.prod.realtimecurrencycalc.utils.rx;
 
+
+import rx.DefaultAppSchedulers;
+
 public class AppSchedulersProvider {
     private static AppSchedulers Instance;
 
